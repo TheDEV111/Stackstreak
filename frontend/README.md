@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# StackStream Frontend
+
+Modern Next.js frontend for the StackStream decentralized content monetization platform.
+
+## Features
+
+- 🔐 **Stacks Wallet Integration** - Connect with Hiro Wallet or Xverse
+- 💳 **Smart Contract Interactions** - Direct integration with deployed contracts
+- 🎨 **Modern UI** - Built with shadcn/ui and Tailwind CSS v4
+- ⚡ **Fast & Responsive** - Optimized with Next.js 15 App Router
+- �� **Blockchain Connected** - Live data from Stacks mainnet
+
+## Tech Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **UI Components**: shadcn/ui, lucide-react
+- **Blockchain**: @stacks/connect, @stacks/transactions
+- **Animations**: framer-motion
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+ 
+- A Stacks wallet (Hiro Wallet or Xverse)
+- STX tokens for transactions
+
+### Installation
+
+```bash
+cd frontend
+npm install
+```
+
+### Environment Setup
+
+Create `.env.local` file:
+
+```env
+NEXT_PUBLIC_NETWORK=mainnet
+```
+
+### Development
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Smart Contracts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Mainnet contracts:
+- Creator Registry: `SPVQ61FEWR6M4HVAT3BNE07D4BNW6A1C2ACCNQ6F.creator-registry`
+- Subscription Manager: `SPVQ61FEWR6M4HVAT3BNE07D4BNW6A1C2ACCNQ6F.subscription-manager`
+- Micropayment Gateway: `SPVQ61FEWR6M4HVAT3BNE07D4BNW6A1C2ACCNQ6F.micropayment-gateway`
 
-## Learn More
+## License
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT

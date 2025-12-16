@@ -1,9 +1,9 @@
 // StackStream Contract Configuration
-import { StacksMainnet, StacksTestnet } from '@stacks/network';
+import { STACKS_MAINNET, STACKS_TESTNET } from '@stacks/network';
 
 export const NETWORK = process.env.NEXT_PUBLIC_NETWORK === 'mainnet' 
-  ? new StacksMainnet() 
-  : new StacksTestnet();
+  ? STACKS_MAINNET
+  : STACKS_TESTNET;
 
 export const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_NETWORK === 'mainnet'
   ? 'SPVQ61FEWR6M4HVAT3BNE07D4BNW6A1C2ACCNQ6F'
