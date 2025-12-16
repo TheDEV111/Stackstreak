@@ -1,13 +1,21 @@
 [project]
 name = "stackstreak"
-description = ""
+description = "StackStream - Decentralized Content Monetization Platform"
 authors = []
 telemetry = true
 cache_dir = "./.cache"
 
-# [contracts.counter]
-# path = "contracts/counter.clar"
-# epoch = "latest"
+[contracts.creator-registry]
+path = "contracts/creator-registry.clar"
+epoch = "latest"
+
+[contracts.subscription-manager]
+path = "contracts/subscription-manager.clar"
+epoch = "latest"
+
+[contracts.micropayment-gateway]
+path = "contracts/micropayment-gateway.clar"
+epoch = "latest"
 
 [repl.analysis]
 passes = ["check_checker"]
