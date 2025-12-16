@@ -192,14 +192,14 @@
             ;; Generate access token
             (let (
                 (token-id (var-get next-access-token-id))
-                (access-key-hash (generate-access-key purchaser content-id block-height))
+                (access-key-hash (generate-access-key purchaser content-id stacks-block-height))
             )
                 (map-set access-tokens token-id {
                     purchaser: purchaser,
                     creator: creator,
                     content-id: content-id,
-                    purchase-block: block-height,
-                    expiry-block: (+ block-height access-token-validity),
+                    purchase-block: stacks-block-height,
+                    expiry-block: (+ stacks-block-height access-token-validity),
                     amount-paid: price,
                     is-active: true,
                     access-key: access-key-hash
@@ -220,7 +220,7 @@
                         total-amount: price,
                         platform-fee: (get fee payment-result),
                         creator-amount: (get creator-amount payment-result),
-                        transaction-block: block-height,
+                        transaction-block: stacks-block-height,
                         is-batch: false
                     })
                     (var-set total-transactions (+ tx-count u1))
@@ -265,7 +265,7 @@
                     total-amount: discounted-price,
                     platform-fee: (get fee payment-result),
                     creator-amount: (get creator-amount payment-result),
-                    transaction-block: block-height,
+                    transaction-block: stacks-block-height,
                     is-batch: true
                 })
                 (var-set total-transactions (+ tx-count u1))
@@ -304,7 +304,7 @@
             bundle-price: bundle-price,
             discount-percent: discount-percent,
             is-active: true,
-            created-at: block-height
+            created-at: stacks-block-height
         })
         
         ;; Update bundle count
@@ -355,7 +355,7 @@
                 creator: creator,
                 content-id: content-id,
                 amount: price,
-                gifted-at: block-height,
+                gifted-at: stacks-block-height,
                 is-claimed: false
             })
             
@@ -384,15 +384,15 @@
         ;; Generate access token for recipient
         (let (
             (token-id (var-get next-access-token-id))
-            (access-key-hash (generate-access-key recipient (get content-id gift-data) block-height))
+            (access-key-hash (generate-access-key recipient (get content-id gift-data) stacks-block-height))
             (access-key {purchaser: recipient, creator: (get creator gift-data), content-id: (get content-id gift-data)})
         )
             (map-set access-tokens token-id {
                 purchaser: recipient,
                 creator: (get creator gift-data),
                 content-id: (get content-id gift-data),
-                purchase-block: block-height,
-                expiry-block: (+ block-height access-token-validity),
+                purchase-block: stacks-block-height,
+                expiry-block: (+ stacks-block-height access-token-validity),
                 amount-paid: (get amount gift-data),
                 is-active: true,
                 access-key: access-key-hash
@@ -421,7 +421,7 @@
     )
         ;; Check if token is valid
         (asserts! (get is-active token-data) err-expired)
-        (asserts! (<= block-height (get expiry-block token-data)) err-expired)
+        (asserts! (<= stacks-block-height (get expiry-block token-data)) err-expired)
         (asserts! (is-eq tx-sender (get purchaser token-data)) err-unauthorized)
         
         (ok true)
@@ -465,7 +465,7 @@
             (match (map-get? access-tokens token-id)
                 token-data (ok (and 
                     (get is-active token-data)
-                    (<= block-height (get expiry-block token-data))
+                    (<= stacks-block-height (get expiry-block token-data))
                 ))
                 (ok false)
             )

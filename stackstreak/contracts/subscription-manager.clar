@@ -195,7 +195,7 @@
             max-subscribers: max-subscribers,
             current-subscribers: u0,
             is-active: true,
-            created-at: block-height
+            created-at: stacks-block-height
         })
         
         (ok true)
@@ -225,9 +225,9 @@
         (map-set subscriptions sub-key {
             tier-name: tier-name,
             monthly-price: price,
-            start-block: block-height,
-            last-payment-block: block-height,
-            next-payment-block: (+ block-height blocks-per-month),
+            start-block: stacks-block-height,
+            last-payment-block: stacks-block-height,
+            next-payment-block: (+ stacks-block-height blocks-per-month),
             auto-renew: true,
             referred-by: referred-by,
             total-paid: price,
@@ -247,7 +247,7 @@
                 {subscriber: subscriber, creator: creator, payment-id: payment-count}
                 {
                     amount: price,
-                    payment-block: block-height,
+                    payment-block: stacks-block-height,
                     tier-name: tier-name
                 }
             )
@@ -273,10 +273,10 @@
     )
         ;; Check if subscription is active and due for renewal
         (asserts! (get is-active sub-data) err-subscription-expired)
-        (asserts! (>= block-height (get next-payment-block sub-data)) err-subscription-active)
+        (asserts! (>= stacks-block-height (get next-payment-block sub-data)) err-subscription-active)
         
         ;; Allow grace period
-        (asserts! (<= block-height (+ (get next-payment-block sub-data) grace-period-blocks)) 
+        (asserts! (<= stacks-block-height (+ (get next-payment-block sub-data) grace-period-blocks)) 
             err-subscription-expired)
         
         ;; Process payment
@@ -285,8 +285,8 @@
         ;; Update subscription
         (map-set subscriptions sub-key
             (merge sub-data {
-                last-payment-block: block-height,
-                next-payment-block: (+ block-height blocks-per-month),
+                last-payment-block: stacks-block-height,
+                next-payment-block: (+ stacks-block-height blocks-per-month),
                 total-paid: (+ (get total-paid sub-data) price)
             })
         )
@@ -297,7 +297,7 @@
                 {subscriber: subscriber, creator: creator, payment-id: payment-count}
                 {
                     amount: price,
-                    payment-block: block-height,
+                    payment-block: stacks-block-height,
                     tier-name: (get tier-name sub-data)
                 }
             )
@@ -319,7 +319,7 @@
         (sub-data (unwrap! (map-get? subscriptions sub-key) err-not-found))
         (tier-key {creator: creator, tier-name: (get tier-name sub-data)})
         (tier-data (unwrap! (map-get? subscription-tiers tier-key) err-not-found))
-        (is-early (< block-height (get next-payment-block sub-data)))
+        (is-early (< stacks-block-height (get next-payment-block sub-data)))
     )
         ;; Check if active
         (asserts! (get is-active sub-data) err-subscription-expired)
@@ -435,7 +435,7 @@
     )
         ;; Check if subscription is active and not expired (including grace period)
         (asserts! (get is-active sub-data) err-subscription-expired)
-        (asserts! (<= block-height (+ (get next-payment-block sub-data) grace-period-blocks))
+        (asserts! (<= stacks-block-height (+ (get next-payment-block sub-data) grace-period-blocks))
             err-subscription-expired)
         
         (ok true)
@@ -472,7 +472,7 @@
     (match (map-get? subscriptions {subscriber: subscriber, creator: creator})
         sub-data (ok (and 
             (get is-active sub-data)
-            (<= block-height (+ (get next-payment-block sub-data) grace-period-blocks))
+            (<= stacks-block-height (+ (get next-payment-block sub-data) grace-period-blocks))
         ))
         (ok false)
     )

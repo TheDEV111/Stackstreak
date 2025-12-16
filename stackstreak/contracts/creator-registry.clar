@@ -116,7 +116,7 @@
             reputation-score: u100, ;; Starting reputation
             total-content: u0,
             total-revenue: u0,
-            registered-at: block-height,
+            registered-at: stacks-block-height,
             verification-stake: u0
         })
         
@@ -163,8 +163,8 @@
         ;; Check if already verified
         (asserts! (not (get is-verified creator-data)) err-already-exists)
         
-        ;; Transfer verification stake
-        (try! (stx-transfer? verification-stake caller (as-contract tx-sender)))
+        ;; Transfer verification stake to platform treasury (held for verification)
+        (try! (stx-transfer? verification-stake caller (var-get platform-treasury)))
         
         ;; Update verification status
         (map-set creators caller 
@@ -181,7 +181,7 @@
             (map-set creator-badges badge-id {
                 creator: caller,
                 badge-type: "VERIFIED",
-                issued-at: block-height
+                issued-at: stacks-block-height
             })
             (var-set last-badge-id badge-id)
         )
@@ -201,8 +201,8 @@
         (asserts! (get is-verified creator-data) err-unauthorized)
         (asserts! (> stake-amount u0) err-insufficient-funds)
         
-        ;; Refund stake
-        (try! (as-contract (stx-transfer? stake-amount tx-sender caller)))
+        ;; Refund stake from platform treasury
+        (try! (stx-transfer? stake-amount (var-get platform-treasury) caller))
         
         ;; Update verification status
         (map-set creators caller 
@@ -238,7 +238,7 @@
             price: price,
             access-count: u0,
             revenue: u0,
-            created-at: block-height,
+            created-at: stacks-block-height,
             is-active: true
         })
         
